@@ -16,8 +16,7 @@ timezone: Asia/Shanghai
 #url: http://yoursite.com
 url: http://wangxiangdong.xyz
 root: /
-#permalink: :year/:month/:day/:title/
-permalink: title.html
+permalink: :year/:month/:day/:title/
 permalink_defaults:
 
 # Directory
