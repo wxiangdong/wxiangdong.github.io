@@ -127,7 +127,7 @@ scheme: Mist
 # Value before `||` delimeter is the target permalink.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.
 social:
-  GitHub: https://github.com/gitwxdhub || github
+  GitHub: https://github.com/wxiangdong || github
   CSDN: https://blog.csdn.net/wxd_csdn_2016 
   #E-Mail: mailto:yourname@gmail.com || envelope
   #Google: https://plus.google.com/yourname || google
@@ -151,8 +151,8 @@ links_layout: block
 #links_layout: inline
 links:
   #Title: http://example.com/
-  大鸡排: http://www.dajipai.cc/ 
-  吴小龙: http://wuxiaolong.me/ 
+  #大鸡排: http://www.dajipai.cc/ 
+  #吴小龙: http://wuxiaolong.me/ 
   屈超: https://jsonchao.github.io/  
 
 # Sidebar Avatar
@@ -403,6 +403,7 @@ valine:
 # Support for LiveRe comments system.
 # You can get your uid from https://livere.com/insight/myCode (General web site)
 #livere_uid: your uid
+livere_uid: MTAyMC8zNzUyMC8xNDA1Mg
 
 # Gitment
 # Introduction: https://imsun.net/posts/gitment-introduction/
@@ -579,7 +580,7 @@ busuanzi_count:
 
 
 # Enable baidu push so that the blog will push the url to baidu automatically which is very helpful for SEO
-baidu_push: false
+baidu_push: true
 
 # Google Calendar
 # Share your recent schedule to others via calendar page
