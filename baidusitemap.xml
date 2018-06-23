@@ -4,28 +4,6 @@
 
     
   <url>
-    <loc>http://wangxiangdong.xyz/2018/06/20/hello-world/</loc>
-    <lastmod>2018-06-23T02:33:32.245Z</lastmod>
-    <data>
-        <display>
-        <title>Hello World</title>
-        <pubTime>2018-06-20T07:47:51.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>随笔</tag>
-         
-         
-           
-             
-              <breadCrumb title="java基础" url="http://wangxiangdong.xyz/categories/java%E5%9F%BA%E7%A1%80/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://wangxiangdong.xyz/2018/06/20/csdn-markdown/</loc>
     <lastmod>2018-06-23T02:33:32.245Z</lastmod>
     <data>
@@ -33,14 +11,36 @@
         <title>欢迎使用Markdown编辑器写博客</title>
         <pubTime>2018-06-20T07:47:51.000Z</pubTime>
         
-        <tag>随笔</tag>
-         
         <tag>markdown</tag>
+         
+        <tag>随笔</tag>
          
          
            
              
               <breadCrumb title="android基础" url="http://wangxiangdong.xyz/categories/android%E5%9F%BA%E7%A1%80/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://wangxiangdong.xyz/2018/06/20/hello-world/</loc>
+    <lastmod>2018-06-23T02:33:32.245Z</lastmod>
+    <data>
+        <display>
+        <title>Hello World</title>
+        <pubTime>2018-06-20T07:47:51.000Z</pubTime>
+        
+        <tag>随笔</tag>
+         
+        <tag>android</tag>
+         
+         
+           
+             
+              <breadCrumb title="java基础" url="http://wangxiangdong.xyz/categories/java%E5%9F%BA%E7%A1%80/"/>
           
         </display>
     </data>
