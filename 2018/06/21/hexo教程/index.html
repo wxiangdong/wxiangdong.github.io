@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="javascript," />
+  <meta name="keywords" content="hexo,javascript," />
 
 
 
@@ -88,18 +88,20 @@
 
 
 
-<meta name="description" content="有理想的人，生活总是火热的。">
-<meta name="keywords" content="javascript">
+<meta name="description" content="前几天偶然看到一个朋友blog，感觉很流弊的样子，便在网上查找了一些hexo和Github搭建静态博客的教程，加上之前在万网购买的.xyz域名，于是我的个人blog诞生了。 以下是在windows环境操作">
+<meta name="keywords" content="hexo,javascript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hexo教程">
 <meta property="og:url" content="http://wangxiangdong.xyz/2018/06/21/hexo教程/index.html">
 <meta property="og:site_name" content="王同学的技术小屋">
-<meta property="og:description" content="有理想的人，生活总是火热的。">
+<meta property="og:description" content="前几天偶然看到一个朋友blog，感觉很流弊的样子，便在网上查找了一些hexo和Github搭建静态博客的教程，加上之前在万网购买的.xyz域名，于是我的个人blog诞生了。 以下是在windows环境操作">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-23T02:33:32.245Z">
+<meta property="og:image" content="http://wangxiangdong.xyz/images/hexo_init.png">
+<meta property="og:updated_time" content="2018-06-23T09:45:14.968Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hexo教程">
-<meta name="twitter:description" content="有理想的人，生活总是火热的。">
+<meta name="twitter:description" content="前几天偶然看到一个朋友blog，感觉很流弊的样子，便在网上查找了一些hexo和Github搭建静态博客的教程，加上之前在万网购买的.xyz域名，于是我的个人blog诞生了。 以下是在windows环境操作">
+<meta name="twitter:image" content="http://wangxiangdong.xyz/images/hexo_init.png">
 
 
 
@@ -250,7 +252,6 @@
 
 
 
-#add baidu tuisong
 <script>
 (function(){
     var bp = document.createElement('script');
@@ -382,7 +383,50 @@
       
 
       
-        
+        <p>前几天偶然看到一个朋友blog，感觉很流弊的样子，便在网上查找了一些<a href="https://hexo.io/" target="_blank" rel="noopener">hexo</a>和<a href="https://github.com/" target="_blank" rel="noopener">Github</a>搭建静态博客的教程，加上之前在万网购买的.xyz域名，于是我的个人blog诞生了。</p>
+<p>以下是在windows环境操作</p>
+<hr>
+<a id="more"></a>
+<h2 id="安装node-js"><a href="#安装node-js" class="headerlink" title="安装node.js"></a>安装node.js</h2><p>首先登录<a href="https://nodejs.org/en/" target="_blank" rel="noopener">node.js官网</a>，选择适合自己的版本下载，然后安装。(你也可以参考hexo官网的方法)</p>
+<h2 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h2><p>登录<a href="https://git-scm.com/" target="_blank" rel="noopener">git官网</a>选择版本下载，一路next即可完成安装。</p>
+<blockquote>
+<p>注意: 安装过程中，注意勾选在右键菜单建立git bash快捷方式一项，因为之后的各种操作都需要在git bash中用命令行进行操作，方便随时随地打开命令窗口。</p>
+</blockquote>
+<h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><p>在电脑任意空白处点击右键，选择Git Bash Here打开命令行</p>
+<blockquote>
+<p>npm install -g cnpm –registry=<a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a></p>
+</blockquote>
+<p>然后就可以使用下面的命令从npm安装Hexo：</p>
+<blockquote>
+<p>npm install hexo-cli -g</p>
+</blockquote>
+<h2 id="初始化Hexo"><a href="#初始化Hexo" class="headerlink" title="初始化Hexo"></a>初始化Hexo</h2><p>安装完成之后，就可以选择一个自己的文件夹作为博客的根目录( 例如 D:\blog ),然后在该目录下打开命令行</p>
+<blockquote>
+<p>hexo init</p>
+</blockquote>
+<p>初始化博客空间，生成博客运作所需要的文件，接下来安装依赖包</p>
+<blockquote>
+<p>npm install</p>
+</blockquote>
+<p>此时，你的文件夹下的目录结构应该是这样：<br><img src="/images/hexo_init.png" alt=""></p>
+<h2 id="本地运行"><a href="#本地运行" class="headerlink" title="本地运行"></a>本地运行</h2><blockquote>
+<p>hexo g<br>hexo s</p>
+</blockquote>
+<p>在浏览器地址栏输入<a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a>,按下回车键，准备好迎接美丽的新领域吧。</p>
+<h2 id="Hexo的一些基本命令"><a href="#Hexo的一些基本命令" class="headerlink" title="Hexo的一些基本命令"></a>Hexo的一些基本命令</h2><blockquote>
+<p>hexo g #完整命令为hexo generate,用于生成静态文件<br>hexo s #完整命令为hexo server,用于启动服务器，主要用来本地预览<br>hexo d #完整命令为hexo deploy,用于将本地文件发布到github等git仓库上<br>hexo n “my article” #完整命令为hexo new,用于新建一篇名为“my article”的文章</p>
+</blockquote>
+<h2 id="发布一篇新文章"><a href="#发布一篇新文章" class="headerlink" title="发布一篇新文章"></a>发布一篇新文章</h2><p>首先Ctrl+C停止当前的本地服务，然后</p>
+<blockquote>
+<p>hexo n “my article”</p>
+</blockquote>
+<p>这样就会在博客目录下source_posts中生成相应的 我的第一篇文章.md文件( 例如 D:\blog\source_posts\my article.md )</p>
+<p>编辑完成后就可以进行本地预览</p>
+<blockquote>
+<p>hexo g<br>hexo s</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>到目前为止利用Hexo搭建本地环境已经完成，下一节将要开始把博客发布到github上，并利用GitHub Pages完成博客的部署。</p>
+
       
     </div>
     
@@ -409,6 +453,8 @@
       
         <div class="post-tags">
           
+            <a href="/tags/hexo/" rel="tag"><i class="fa fa-tag"></i> hexo</a>
+          
             <a href="/tags/javascript/" rel="tag"><i class="fa fa-tag"></i> javascript</a>
           
         </div>
@@ -431,6 +477,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/23/markdown语法/" rel="prev" title="markdown语法">
+                markdown语法 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -487,8 +537,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -507,7 +566,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -518,7 +577,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -529,7 +588,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -587,6 +646,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装node-js"><span class="nav-number">1.</span> <span class="nav-text">安装node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Git"><span class="nav-number">2.</span> <span class="nav-text">安装Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Hexo"><span class="nav-number">3.</span> <span class="nav-text">安装Hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化Hexo"><span class="nav-number">4.</span> <span class="nav-text">初始化Hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地运行"><span class="nav-number">5.</span> <span class="nav-text">本地运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo的一些基本命令"><span class="nav-number">6.</span> <span class="nav-text">Hexo的一些基本命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发布一篇新文章"><span class="nav-number">7.</span> <span class="nav-text">发布一篇新文章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
