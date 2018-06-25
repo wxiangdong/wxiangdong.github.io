@@ -1,10 +1,11 @@
 ---
-title: hexo教程
+title: hexo入门(一):hexo环境搭建
 date: 2018-06-21 09:47:51
 categories: "Hexo教程" 
 tags: 
      - javascript
      - hexo
+     
 ---
 
 前几天偶然看到一个朋友blog，感觉很流弊的样子，便在网上查找了一些[hexo][1]和[Github][2]搭建静态博客的教程，加上之前在万网购买的.xyz域名，于是我的个人blog诞生了。
