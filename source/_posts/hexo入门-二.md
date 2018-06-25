@@ -1,6 +1,6 @@
 ---
 title: hexo入门(二):关联github
-date: 2018-06-25 10:34:51
+date: 2018-06-21 10:34:51
 categories: "Hexo教程" 
 tags: 
      - javascript

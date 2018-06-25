@@ -151,8 +151,8 @@ links_layout: block
 #links_layout: inline
 links:
   #Title: http://example.com/
-  #大鸡排: http://www.dajipai.cc/ 
-  #吴小龙: http://wuxiaolong.me/ 
+  大鸡排: http://www.dajipai.cc/ 
+  吴小龙: http://wuxiaolong.me/ 
   屈超: https://jsonchao.github.io/  
 
 # Sidebar Avatar
