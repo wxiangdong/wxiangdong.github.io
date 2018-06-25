@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://wangxiangdong.xyz/"/>
-  <updated>2018-06-25T06:22:08.359Z</updated>
+  <updated>2018-06-23T09:55:56.675Z</updated>
   <id>http://wangxiangdong.xyz/</id>
   
   <author>
@@ -15,48 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>hexo入门(二):关联github</title>
-    <link href="http://wangxiangdong.xyz/2018/06/25/hexo%E5%85%A5%E9%97%A8-%E4%BA%8C/"/>
-    <id>http://wangxiangdong.xyz/2018/06/25/hexo入门-二/</id>
-    <published>2018-06-25T02:34:51.000Z</published>
-    <updated>2018-06-25T06:22:08.359Z</updated>
-    
-    <content type="html"><![CDATA[<p>前篇文章描述了如何搭建hexo本地环境，本篇文章内容记录如何把博客发布到github上，并利用GitHub Pages完成博客的部署</p><a id="more"></a><p>嗯，相信大家都有github账号了，如果还没有的小伙伴赶快创建一个吧。</p><h2 id="创建一个新的仓库"><a href="#创建一个新的仓库" class="headerlink" title="创建一个新的仓库"></a>创建一个新的仓库</h2><img src="/2018/06/25/hexo入门-二/new_repository.png"><blockquote><p>注意: Respository name 中的 username.github.io 的 username 一定与前面的 Owner 保持一致，例如我的是wxiangdong.github.io</p></blockquote><h2 id="配置Github"><a href="#配置Github" class="headerlink" title="配置Github"></a>配置Github</h2><p>现在我们需要编辑blog文件夹下的_config.xml文件(根目录下的)，与自己 Github 账号的 Repository 仓库建立关联。<br>通过编辑器打开,修改如下内容<br><img src="/2018/06/25/hexo入门-二/root_config.png"></p><p>将其中的username修改成你自己的，记得保存，注意配置的键值对之间一定要有空格。</p><h2 id="自动部署"><a href="#自动部署" class="headerlink" title="自动部署"></a>自动部署</h2><p>配置文件修改完成以后，执行命令，完成自动部署：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure></p><p>这样就将你的博客上传至你的github仓库中，可以进入你的github账户查看。在浏览器中输入 username.github.io预览</p><h2 id="hexo绑定域名"><a href="#hexo绑定域名" class="headerlink" title="hexo绑定域名"></a>hexo绑定域名</h2><p>我的hexo博客是托管在github上的，每次访问都要使用githubname.github.io这么长的域名来访问，所以我在<a href="https://wanwang.aliyun.com/" target="_blank" rel="noopener">万网</a>上买了一个.xyz的域名</p><ul><li><p>点击对应的解析设置</p><img src="/2018/06/25/hexo入门-二/yunming_jiexi.png"></li><li><p>点击添加记录，记录类型选A或CNAME，A记录的记录值就是ip地址，github(官方文档)提供了两个IP地址，192.30.252.153和192.30.252.154，这两个IP地址为github的服务器地址，两个都要填上，解析记录设置两个www和@，线路就默认就行了.</p></li></ul><img src="/2018/06/25/hexo入门-二/record.png"><ul><li>在source文件夹里创建CNAME文件，不带任何后缀，里面添加你的域名信息，如：wangxiangdong.xyz</li></ul><img src="/2018/06/25/hexo入门-二/c_name.png"><blockquote><p>注意: 最好不要添加<a href="http://www.wangxiangdong.xyz，如果添加了就只能用www.wangxiangdong.xyz访问了，如果填写的是wangxiangdong.xyz，那么用www.wangxiangdong.xyz和wangxiangdong.xyz访问都是可以的" target="_blank" rel="noopener">www.wangxiangdong.xyz，如果添加了就只能用www.wangxiangdong.xyz访问了，如果填写的是wangxiangdong.xyz，那么用www.wangxiangdong.xyz和wangxiangdong.xyz访问都是可以的</a></p></blockquote><p>然后清理hexo,发布试试吧<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo d -g</span><br></pre></td></tr></table></figure></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;前篇文章描述了如何搭建hexo本地环境，本篇文章内容记录如何把博客发布到github上，并利用GitHub Pages完成博客的部署&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Hexo教程" scheme="http://wangxiangdong.xyz/categories/Hexo%E6%95%99%E7%A8%8B/"/>
-    
-    
-      <category term="javascript" scheme="http://wangxiangdong.xyz/tags/javascript/"/>
-    
-      <category term="hexo" scheme="http://wangxiangdong.xyz/tags/hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>hexo多终端同步管理</title>
-    <link href="http://wangxiangdong.xyz/2018/06/23/hexo%E5%A4%9A%E7%BB%88%E7%AB%AF%E5%90%8C%E6%AD%A5%E7%AE%A1%E7%90%86/"/>
-    <id>http://wangxiangdong.xyz/2018/06/23/hexo多终端同步管理/</id>
-    <published>2018-06-23T08:24:58.000Z</published>
-    <updated>2018-06-23T09:55:51.480Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-      <category term="hexo教程" scheme="http://wangxiangdong.xyz/categories/hexo%E6%95%99%E7%A8%8B/"/>
-    
-    
-      <category term="hexo" scheme="http://wangxiangdong.xyz/tags/hexo/"/>
-    
-  </entry>
   
   <entry>
     <title>markdown语法</title>
@@ -73,6 +31,52 @@
     
     
       <category term="markdown" scheme="http://wangxiangdong.xyz/tags/markdown/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>hexo多终端同步管理</title>
+    <link href="http://wangxiangdong.xyz/2018/06/23/hexo%E5%A4%9A%E7%BB%88%E7%AB%AF%E5%90%8C%E6%AD%A5%E7%AE%A1%E7%90%86/"/>
+    <id>http://wangxiangdong.xyz/2018/06/23/hexo多终端同步管理/</id>
+    <published>2018-06-23T07:24:58.000Z</published>
+    <updated>2018-06-25T12:44:27.655Z</updated>
+    
+    <content type="html"><![CDATA[<p>前几天使用hexo搭建了Github博客，今天在家里的电脑上想要同步Github博客到本地，同时达到备份博客主题、文章、配置时，遇到了点坑，查询了 一下网上的资料，现在记录一下，也算给遇到同样问题的小伙伴们一个参考。</p><a id="more"></a><h2 id="创建新分支"><a href="#创建新分支" class="headerlink" title="创建新分支"></a>创建新分支</h2><ul><li><p>hexo使用命令<code>hexo g</code>(生成静态文件)和<code>hexo d</code>(部署到github)，这些生成的文件会放在master分支上，如图：</p><img src="/2018/06/23/hexo多终端同步管理/root_config.png"></li><li><p>所以我们新创建hexo分支，将Hexo配置写博客用的相关源文件放在hexo分支上，多终端的同步只需要对分支hexo进行操作</p><img src="/2018/06/23/hexo多终端同步管理/create_branch.png"></li><li><p>将hexo分支设为默认分支</p><img src="/2018/06/23/hexo多终端同步管理/default_branch.png"></li></ul><h2 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h2><ol><li>将刚刚创建的新仓库clone到本地，<code>git clone https://github.com/yourname/yourname.github.io</code>,将之前的blog中的<code>_config.xml</code>,<code>themes</code>,<code>sources</code>,<code>scaffolds</code>,<code>package.json</code>,<code>.gitignore</code>,复制到yourname.github.io文件夹中;</li><li>将themes/next/(我用的是NexT主题)中的.git/删除，否则无法将主题文件夹push；</li><li>在yourname.github.io文件夹执行<code>npm install</code>和<code>npm install hexo-deployer-git</code>（这里可以看一看分支是不是显示为hexo）；</li><li>执行<code>git add .</code>、<code>git commit -m &quot;&quot;</code>、<code>git push origin hexo</code>提交hexo网站源文件到github</li><li>执行<code>hexo g -d</code>生成静态网页部署至github</li></ol><p>这样一来yourname.github.io仓库就有master分支和hexo分支，分别保存静态网页和源文件</p><h2 id="恢复"><a href="#恢复" class="headerlink" title="恢复"></a>恢复</h2><p>在其他电脑上修改博客:</p><ol><li>安装node.js和npm</li><li>安装git</li><li>执行<code>git clone https://github.com/yourname/yourname.github.io</code>将仓库clone到本地</li><li>在文件夹内执行以下命令<code>npm install hexo-cli -g</code>、<code>npm install</code>、<code>npm install hexo-deployer-git</code></li></ol><blockquote><p>注意: 千万不要执行<code>hexo init</code>，不然之前的hexo配置都会被重置</p></blockquote><h2 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h2><ul><li>每次在要编辑博客之前：</li></ul><ol><li>执行<code>git pull</code></li></ol><ul><li>在本地对博客修改（包括修改主题样式、发布新文章等）后：</li></ul><ol><li>依次执行git add .、git commit -m “”、git push origin hexo来提交hexo网站源文件；</li><li>执行hexo g -d生成静态网页部署至Github上。</li></ol><p>即重复备份的7-8步骤</p><p>好了，到这里多终端同步管理就完工了，如若文中有什么地方有错，还请留言告知，谢谢！</p><p>参考:<br><a href="https://blog.csdn.net/Monkey_LZL/article/details/60870891" target="_blank" rel="noopener">如何解决github+Hexo的博客多终端同步问题</a><br><a href="https://www.imooc.com/article/9707?block_id=tuijian_wz" target="_blank" rel="noopener">Hexo搭建博客并实现多终端同步管理</a><br><a href="https://www.jianshu.com/p/6fb0b287f950" target="_blank" rel="noopener">Hexo博客的跨设备同步</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前几天使用hexo搭建了Github博客，今天在家里的电脑上想要同步Github博客到本地，同时达到备份博客主题、文章、配置时，遇到了点坑，查询了 一下网上的资料，现在记录一下，也算给遇到同样问题的小伙伴们一个参考。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Hexo教程" scheme="http://wangxiangdong.xyz/categories/Hexo%E6%95%99%E7%A8%8B/"/>
+    
+    
+      <category term="hexo" scheme="http://wangxiangdong.xyz/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>hexo入门(二):关联github</title>
+    <link href="http://wangxiangdong.xyz/2018/06/21/hexo%E5%85%A5%E9%97%A8-%E4%BA%8C/"/>
+    <id>http://wangxiangdong.xyz/2018/06/21/hexo入门-二/</id>
+    <published>2018-06-21T02:34:51.000Z</published>
+    <updated>2018-06-25T06:43:43.234Z</updated>
+    
+    <content type="html"><![CDATA[<p>前篇文章描述了如何搭建hexo本地环境，本篇文章内容记录如何把博客发布到github上，并利用GitHub Pages完成博客的部署</p><a id="more"></a><p>嗯，相信大家都有github账号了，如果还没有的小伙伴赶快创建一个吧。</p><h2 id="创建一个新的仓库"><a href="#创建一个新的仓库" class="headerlink" title="创建一个新的仓库"></a>创建一个新的仓库</h2><img src="/2018/06/21/hexo入门-二/new_repository.png"><blockquote><p>注意: Respository name 中的 username.github.io 的 username 一定与前面的 Owner 保持一致，例如我的是wxiangdong.github.io</p></blockquote><h2 id="配置Github"><a href="#配置Github" class="headerlink" title="配置Github"></a>配置Github</h2><p>现在我们需要编辑blog文件夹下的_config.xml文件(根目录下的)，与自己 Github 账号的 Repository 仓库建立关联。<br>通过编辑器打开,修改如下内容<br><img src="/2018/06/21/hexo入门-二/root_config.png"></p><p>将其中的username修改成你自己的，记得保存，注意配置的键值对之间一定要有空格。</p><h2 id="自动部署"><a href="#自动部署" class="headerlink" title="自动部署"></a>自动部署</h2><p>配置文件修改完成以后，执行命令，完成自动部署：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure></p><p>这样就将你的博客上传至你的github仓库中，可以进入你的github账户查看。在浏览器中输入 username.github.io预览</p><h2 id="hexo绑定域名"><a href="#hexo绑定域名" class="headerlink" title="hexo绑定域名"></a>hexo绑定域名</h2><p>我的hexo博客是托管在github上的，每次访问都要使用githubname.github.io这么长的域名来访问，所以我在<a href="https://wanwang.aliyun.com/" target="_blank" rel="noopener">万网</a>上买了一个.xyz的域名</p><ul><li><p>点击对应的解析设置</p><img src="/2018/06/21/hexo入门-二/yunming_jiexi.png"></li><li><p>点击添加记录，记录类型选A或CNAME，A记录的记录值就是ip地址，github(官方文档)提供了两个IP地址，192.30.252.153和192.30.252.154，这两个IP地址为github的服务器地址，两个都要填上，解析记录设置两个www和@，线路就默认就行了.</p></li></ul><img src="/2018/06/21/hexo入门-二/record.png"><ul><li>在source文件夹里创建CNAME文件，不带任何后缀，里面添加你的域名信息，如：wangxiangdong.xyz</li></ul><img src="/2018/06/21/hexo入门-二/c_name.png"><blockquote><p>注意: 最好不要添加<a href="http://www.wangxiangdong.xyz，如果添加了就只能用www.wangxiangdong.xyz访问了，如果填写的是wangxiangdong.xyz，那么用www.wangxiangdong.xyz和wangxiangdong.xyz访问都是可以的" target="_blank" rel="noopener">www.wangxiangdong.xyz，如果添加了就只能用www.wangxiangdong.xyz访问了，如果填写的是wangxiangdong.xyz，那么用www.wangxiangdong.xyz和wangxiangdong.xyz访问都是可以的</a></p></blockquote><p>然后清理hexo,发布试试吧<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo d -g</span><br></pre></td></tr></table></figure></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前篇文章描述了如何搭建hexo本地环境，本篇文章内容记录如何把博客发布到github上，并利用GitHub Pages完成博客的部署&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Hexo教程" scheme="http://wangxiangdong.xyz/categories/Hexo%E6%95%99%E7%A8%8B/"/>
+    
+    
+      <category term="javascript" scheme="http://wangxiangdong.xyz/tags/javascript/"/>
+    
+      <category term="hexo" scheme="http://wangxiangdong.xyz/tags/hexo/"/>
     
   </entry>
   
