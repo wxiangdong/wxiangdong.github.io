@@ -99,7 +99,7 @@
 <meta property="og:image" content="http://wangxiangdong.xyz/2018/06/23/hexo多终端同步管理/root_config.png">
 <meta property="og:image" content="http://wangxiangdong.xyz/2018/06/23/hexo多终端同步管理/create_branch.png">
 <meta property="og:image" content="http://wangxiangdong.xyz/2018/06/23/hexo多终端同步管理/default_branch.png">
-<meta property="og:updated_time" content="2018-06-25T12:55:46.245Z">
+<meta property="og:updated_time" content="2018-06-25T13:01:39.668Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hexo多终端同步管理">
 <meta name="twitter:description" content="前几天使用hexo搭建了Github博客，今天在家里的电脑上想要同步Github博客到本地，同时达到备份博客主题、文章、配置时，遇到了点坑，查询了 一下网上的资料，现在记录一下，也算给遇到同样问题的小伙伴们一个参考。">
@@ -416,19 +416,15 @@
 <blockquote>
 <p>注意: 千万不要执行<code>hexo init</code>，不然之前的hexo配置都会被重置</p>
 </blockquote>
-<h2 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h2><ul>
-<li><p>每次在要编辑博客之前：</p>
+<h2 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h2><p>每次在要编辑博客之前：</p>
 <ol>
 <li>执行<code>git pull</code></li>
 </ol>
-</li>
-<li><p>在本地对博客修改（包括修改主题样式、发布新文章等）后：</p>
+<p>在本地对博客修改（包括修改主题样式、发布新文章等）后：</p>
 <ol>
 <li>依次执行<code>git add .</code>、<code>git commit -m &quot;&quot;</code>、<code>git push origin hexo</code>来提交hexo网站源文件；</li>
 <li>执行<code>hexo g -d</code>生成静态网页部署至Github上。</li>
 </ol>
-</li>
-</ul>
 <p>即重复备份的7-8步骤</p>
 <p>好了，到这里多终端同步管理就完工了，如若文中有什么地方有错，还请留言告知，谢谢！</p>
 <p>参考:<br><a href="https://blog.csdn.net/Monkey_LZL/article/details/60870891" target="_blank" rel="noopener">如何解决github+Hexo的博客多终端同步问题</a><br><a href="https://www.imooc.com/article/9707?block_id=tuijian_wz" target="_blank" rel="noopener">Hexo搭建博客并实现多终端同步管理</a><br><a href="https://www.jianshu.com/p/6fb0b287f950" target="_blank" rel="noopener">Hexo博客的跨设备同步</a></p>
