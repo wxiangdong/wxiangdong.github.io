@@ -96,12 +96,13 @@
 <meta property="og:site_name" content="王同学的技术小屋">
 <meta property="og:description" content="前言基于mtk6580,添加多logo和开关机动画切换， 描述目前android开机画面由三个部分（阶段）组成，第一部分在bootloader启动时显示（静态），第二部分在启动kernel时显示（静态），第三部分在系统启动时（bootanimation）显示（动画）。 添加资源 在device/tangxun/tx6580_weg_m/ProjectConfig.mk,找到BOOT_LOGO=这项">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://wangxiangdong.xyz/2018/07/31/android多logo和动画切换/add_logo_image_1.png">
 <meta property="og:image" content="http://wangxiangdong.xyz/2018/07/31/android多logo和动画切换/add_logo_image_2.png">
 <meta property="og:updated_time" content="2018-08-02T06:35:30.647Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android多logo和动画切换">
 <meta name="twitter:description" content="前言基于mtk6580,添加多logo和开关机动画切换， 描述目前android开机画面由三个部分（阶段）组成，第一部分在bootloader启动时显示（静态），第二部分在启动kernel时显示（静态），第三部分在系统启动时（bootanimation）显示（动画）。 添加资源 在device/tangxun/tx6580_weg_m/ProjectConfig.mk,找到BOOT_LOGO=这项">
-<meta name="twitter:image" content="http://wangxiangdong.xyz/2018/07/31/android多logo和动画切换/add_logo_image_2.png">
+<meta name="twitter:image" content="http://wangxiangdong.xyz/2018/07/31/android多logo和动画切换/add_logo_image_1.png">
 
 
 
@@ -387,7 +388,7 @@
 <h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>目前android开机画面由三个部分（阶段）组成，第一部分在bootloader启动时显示（静态），第二部分在启动kernel时显示（静态），第三部分在系统启动时（bootanimation）显示（动画）。</p>
 <h3 id="添加资源"><a href="#添加资源" class="headerlink" title="添加资源"></a>添加资源</h3><ol>
 <li>在device/tangxun/tx6580_weg_m/ProjectConfig.mk,找到BOOT_LOGO=这项,记住这项内容(如hd720,),在vendor/mediatek/proprietary/bootable/bootloader/lk/dev/logo/目录下找到BOOT_LOGO=对应的文件夹把你的图片放进去，图片我是这样命名的hd720_kernel_i7.bmp.(如果你只是替换的话更换hd720_kernel.bmp和hd720_uboot.bmp这两张图片即可，新图片的名字需与旧图片一致)</li>
-<li>在vendor/mediatek/proprietary/bootable/bootloader/lk/dev/logo/rules.mk下修改RESOURCE_OBJ_LIST列表，如图：
+<li>在vendor/mediatek/proprietary/bootable/bootloader/lk/dev/logo/rules.mk下修改RESOURCE_OBJ_LIST列表，如图：<img src="/2018/07/31/android多logo和动画切换/add_logo_image_1.png">
 最后两项就是我添加的</li>
 <li>同目录下update文件中添加<img src="/2018/07/31/android多logo和动画切换/add_logo_image_2.png">
 </li>
