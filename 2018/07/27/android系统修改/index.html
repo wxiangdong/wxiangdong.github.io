@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="MTK - 系统修改," />
 
 
 
@@ -88,17 +88,18 @@
 
 
 
-<meta name="description" content="有理想的人，生活总是火热的。">
+<meta name="description" content="前言以下都是基于mtk平台，系统相关修改点，在此记录。">
+<meta name="keywords" content="MTK - 系统修改">
 <meta property="og:type" content="article">
 <meta property="og:title" content="android系统修改">
 <meta property="og:url" content="http://wangxiangdong.xyz/2018/07/27/android系统修改/index.html">
 <meta property="og:site_name" content="王同学的技术小屋">
-<meta property="og:description" content="有理想的人，生活总是火热的。">
+<meta property="og:description" content="前言以下都是基于mtk平台，系统相关修改点，在此记录。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-27T02:28:50.499Z">
+<meta property="og:updated_time" content="2018-08-06T10:36:14.693Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android系统修改">
-<meta name="twitter:description" content="有理想的人，生活总是火热的。">
+<meta name="twitter:description" content="前言以下都是基于mtk平台，系统相关修改点，在此记录。">
 
 
 
@@ -326,6 +327,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/系统修改/" itemprop="url" rel="index">
+                    <span itemprop="name">系统修改</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -358,7 +381,30 @@
       
 
       
-        
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>以下都是基于mtk平台，系统相关修改点，在此记录。</p>
+<a id="more"></a>
+<ol>
+<li>修改wifi信号强度<br>framwork/base/wifi/java/android/net/wifi/WifiManager.java 修改culculateSignalLevel方法中的rssi</li>
+<li>3G信号强度修改<br>vendor/mediatek/proprietary/frameworks/base/packages/FwkPlugin/src/com/mediatek/op/telephony/DefaultServiceStateExt.java </li>
+<li>dex2oat优化模式<br>frameworks/native/cmds/installd/commands.cpp<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">strcpy(dex2oat_compiler_filter_arg, &quot;--compiler-filter=interpret-only&quot;);</span><br><span class="line">have_dex2oat_compiler_filter_flag = true;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>修改模式为interpret-only，烧录开机时间加快，安装播放器之类的大型应用速度加快</p>
+<ol start="4">
+<li>设置中打印项修改<br>packages/apps/Settings/src/com/android/settings/print/PrintSettingsFragment.java</li>
+<li>蓝牙wifi名称修改<br>device/mediatek/common/custom.conf     </li>
+<li>imei相关<br>vendor/mediatek/proprietary/packages/apps/EngineerMode/src/com/mediatek/engineermode/SsWriteImeiActivity.java<br>vendor/mediatek/proprietary/packages/apps/EngineerMode/src/com/mediatek/engineermode/GPRS.java</li>
+<li>机型名称<br>build/tools/buildinfo.sh<br>修改ro.product.model=“要修改的型号”</li>
+<li>设置中内核信息和版本号<br>packages/apps/Settings/src/com/android/settings/DeviceInfoSettings.java</li>
+<li>BUILD_VERNO修改<br>MTK_BUILD_VERNO = alps-mp-m0.mp1-V2.115</li>
+<li><p>去掉开机引导<br>packages/apps/Launcher3/src/com/android/launcher3/Launcher.java<br>注释launcherClings.showLongPressCling(true)<br>11.隐藏设置中的某一项<br>packages/apps/Settings/src/com/android/settings/SettingsActivity.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    Bundle metaData = activityInfo.metaData;</span><br><span class="line">-   if ((metaData == null) || !metaData.containsKey(EXTRA_CATEGORY_KEY)) &#123;</span><br><span class="line">+   /*if ((metaData == null) || !metaData.containsKey(EXTRA_CATEGORY_KEY)) &#123;*/    // add by wxd for hide google in settings</span><br><span class="line">+   if ((metaData == null) || !metaData.containsKey(EXTRA_CATEGORY_KEY) || activityInfo.packageName.equals(&quot;com.google.android.gms&quot;)) &#123;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改默认横屏<br>framwork/base/services/core/java/com/android/server/policy/PhoneWindowManager.java<br>修改rotationForOrientationLw方法，直接返回Surface.ROTATION_90</p>
+</li>
+<li>修改hotseat横屏时在底部</li>
+</ol>
+
       
     </div>
     
@@ -429,6 +475,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MTK-系统修改/" rel="tag"><i class="fa fa-tag"></i> MTK - 系统修改</a>
+          
+        </div>
       
 
       
@@ -508,8 +560,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -550,7 +611,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -616,6 +677,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
