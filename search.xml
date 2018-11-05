@@ -1,162 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search> 
-  
-    
-    <entry>
-      <title>android多logo和动画切换</title>
-      <link href="/2018/07/31/android%E5%A4%9Alogo%E5%92%8C%E5%8A%A8%E7%94%BB%E5%88%87%E6%8D%A2/"/>
-      <url>/2018/07/31/android%E5%A4%9Alogo%E5%92%8C%E5%8A%A8%E7%94%BB%E5%88%87%E6%8D%A2/</url>
-      <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>基于mtk6580,添加多logo和开关机动画切换，</p><h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>目前android开机画面由三个部分（阶段）组成，第一部分在bootloader启动时显示（静态），第二部分在启动kernel时显示（静态），第三部分在系统启动时（bootanimation）显示（动画）。</p><a id="more"></a><h3 id="添加资源"><a href="#添加资源" class="headerlink" title="添加资源"></a>添加资源</h3><ol><li>在device/tangxun/tx6580_weg_m/ProjectConfig.mk,找到BOOT_LOGO=这项,记住这项内容(如hd720,),在vendor/mediatek/proprietary/bootable/bootloader/lk/dev/logo/目录下找到BOOT_LOGO=对应的文件夹把你的图片放进去，图片我是这样命名的hd720_kernel_i7.bmp.(如果你只是替换的话更换hd720_kernel.bmp和hd720_uboot.bmp这两张图片即可，新图片的名字需与旧图片一致)</li><li>在vendor/mediatek/proprietary/bootable/bootloader/lk/dev/logo/rules.mk下修改RESOURCE_OBJ_LIST列表，如图：<img src="/2018/07/31/android多logo和动画切换/add_logo_image_1.png">最后两项就是我添加的</li><li>同目录下update文件中添加<img src="/2018/07/31/android多logo和动画切换/add_logo_image_2.png"></li><li></li></ol><h3 id="添加标识区分不同logo"><a href="#添加标识区分不同logo" class="headerlink" title="添加标识区分不同logo"></a>添加标识区分不同logo</h3><p>思路：首先我们添加的标识，不能被轻易清除，包括恢复出厂设置情况下。所以我选择在protect_f分区下创建空文件的方式，在show——logo的时候判断相应文件是否存在。</p><ol><li><p>选择一种要展示的logo和动画，在protect_f分区下创建.dat后缀的文件,删除其他类型动画在protect_f分区下的相应文件</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">private void createOrDeleteFile(String str)&#123;</span><br><span class="line">        String sDir = &quot;/protect_f&quot;;</span><br><span class="line">        File fDir = new File(sDir);</span><br><span class="line">        if (fDir.exists())&#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                Runtime.getRuntime().exec(&quot;chmod 777&quot;+sDir);</span><br><span class="line">            &#125; catch (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        File mFile = new File(sDir,File_moto_logo);</span><br><span class="line">        if (mFile.exists())&#123;</span><br><span class="line">            mFile.delete();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        mFile = new File(sDir,File_samsun_logo);</span><br><span class="line">        if (mFile.exists())&#123;</span><br><span class="line">            mFile.delete();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        mFile = new File(sDir,&quot;sysBoot_logo_null.dat&quot;);</span><br><span class="line">        if (mFile.exists())&#123;</span><br><span class="line">            mFile.delete();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (str != null)&#123;</span><br><span class="line">            mFile = new File(sDir,str);</span><br><span class="line">            if (!mFile.exists())&#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    mFile.createNewFile();</span><br><span class="line">                &#125; catch (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li><li><p>在vendor/mediatek/proprietary/external/libshowlogo/charging_animation.cpp文件中，添加logo切换</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">const char LOGO_ON5_ANI[] = &quot;/protect_f/sysBoot_logo_moto.dat&quot;;</span><br><span class="line">const char LOGO_I7_ANI[] = &quot;/protect_f/sysBoot_logo_samsun.dat&quot;;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line"> * Show kernel logo when phone boot up</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">void show_kernel_logo()</span><br><span class="line">&#123;</span><br><span class="line">    SLOGD(&quot;[libshowlogo: %s %d]show kernel logo, index = 38 \n&quot;,__FUNCTION__,__LINE__);</span><br><span class="line">    if (error_flag == 0)</span><br><span class="line">    &#123;</span><br><span class="line">        if(open(LOGO_ON5_ANI,O_RDONLY) &gt;= 0)</span><br><span class="line">        &#123;</span><br><span class="line">            anim_show_logo(kernel_logo_position+1);</span><br><span class="line">            property_set(&quot;ani_type&quot;,&quot;custom&quot;);</span><br><span class="line">            property_set(&quot;animation_num&quot;,&quot;On5_Ani&quot;);</span><br><span class="line">        &#125;else if (open(LOGO_I7_ANI,O_RDONLY) &gt;= 0)</span><br><span class="line">        &#123;</span><br><span class="line">            anim_show_logo(kernel_logo_position+2);</span><br><span class="line">            property_set(&quot;ani_type&quot;,&quot;custom&quot;);</span><br><span class="line">            property_set(&quot;animation_num&quot;,&quot;I7_Ani&quot;);</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            anim_show_logo(kernel_logo_position);</span><br><span class="line">            property_set(&quot;ani_type&quot;,&quot;android&quot;);</span><br><span class="line">            property_set(&quot;animtion_num&quot;,&quot;android&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><p>framworks/base/cmds/bootanimation/BootAnimation.cpp文件中，在void BootAnimation::initBootanimationZip()方法中添加切换动画</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#endif</span><br><span class="line">    char anitype[PROPERTY_VALUE_MAX];</span><br><span class="line">    char aninum[PROPERTY_VALUE_MAX];</span><br><span class="line">    property_get(&quot;ani_type&quot;,anitype,&quot;&quot;);</span><br><span class="line">    property_get(&quot;animation_num&quot;,aninum,&quot;&quot;);</span><br><span class="line">    if (strcmp(&quot;custom&quot;,anitype) == 0)</span><br><span class="line">    &#123;</span><br><span class="line">        if (strcmp(&quot;On5_Ani&quot;, aninum)==0) &#123;</span><br><span class="line">            if (access(&quot;/system/media/bootanimation_custom.zip&quot;, R_OK) == 0) &#123;</span><br><span class="line">                if ((zipFile = ZipFileRO::open(&quot;/system/media/bootanimation_custom.zip&quot;)) != NULL) &#123;</span><br><span class="line">                    mZip = zipFile;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;else if (strcmp(&quot;I7_Ani&quot;, aninum)==0)&#123;</span><br><span class="line">            if (access(&quot;/system/media/bootanimation_s6.zip&quot;, R_OK) == 0) &#123;</span><br><span class="line">                if ((zipFile = ZipFileRO::open(&quot;/system/media/bootanimation_s6.zip&quot;)) != NULL) &#123;</span><br><span class="line">                    mZip = zipFile;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (zipFile == NULL) &#123;</span><br></pre></td></tr></table></figure></li></ol><p>到这里功能基本就可以实现了。</p>]]></content>
-      
+<search>
+  <entry>
+    <title><![CDATA[android多logo和动画切换]]></title>
+    <url>%2F2018%2F07%2F31%2Fandroid%E5%A4%9Alogo%E5%92%8C%E5%8A%A8%E7%94%BB%E5%88%87%E6%8D%A2%2F</url>
+    <content type="text"><![CDATA[前言基于mtk6580,添加多logo和开关机动画切换 描述目前android开机画面由三个部分（阶段）组成，第一部分在bootloader启动时显示（静态），第二部分在启动kernel时显示（静态），第三部分在系统启动时（bootanimation）显示（动画）。 添加资源 在device/tangxun/tx6580_weg_m/ProjectConfig.mk,找到BOOT_LOGO=这项,记住这项内容(如hd720,),在vendor/mediatek/proprietary/bootable/bootloader/lk/dev/logo/目录下找到BOOT_LOGO=对应的文件夹把你的图片放进去，图片我是这样命名的hd720_kernel_i7.bmp.(如果你只是替换的话更换hd720_kernel.bmp和hd720_uboot.bmp这两张图片即可，新图片的名字需与旧图片一致) 在vendor/mediatek/proprietary/bootable/bootloader/lk/dev/logo/rules.mk下修改RESOURCE_OBJ_LIST列表，如图： 最后两项就是我添加的 同目录下update文件中添加 添加标识区分不同logo思路：首先我们添加的标识，不能被轻易清除，包括恢复出厂设置情况下。所以我选择在protect_f分区下创建空文件的方式，在show——logo的时候判断相应文件是否存在。 选择一种要展示的logo和动画，在protect_f分区下创建.dat后缀的文件,删除其他类型动画在protect_f分区下的相应文件 12345678910111213141516171819202122232425262728293031323334353637private void createOrDeleteFile(String str)&#123; String sDir = &quot;/protect_f&quot;; File fDir = new File(sDir); if (fDir.exists())&#123; try &#123; Runtime.getRuntime().exec(&quot;chmod 777&quot;+sDir); &#125; catch (IOException e) &#123; e.printStackTrace(); &#125; &#125; File mFile = new File(sDir,File_moto_logo); if (mFile.exists())&#123; mFile.delete(); &#125; mFile = new File(sDir,File_samsun_logo); if (mFile.exists())&#123; mFile.delete(); &#125; mFile = new File(sDir,&quot;sysBoot_logo_null.dat&quot;); if (mFile.exists())&#123; mFile.delete(); &#125; if (str != null)&#123; mFile = new File(sDir,str); if (!mFile.exists())&#123; try &#123; mFile.createNewFile(); &#125; catch (IOException e) &#123; e.printStackTrace(); &#125; &#125; &#125; &#125; 在vendor/mediatek/proprietary/external/libshowlogo/charging_animation.cpp文件中，添加logo切换 1234567891011121314151617181920212223242526272829const char LOGO_ON5_ANI[] = &quot;/protect_f/sysBoot_logo_moto.dat&quot;;const char LOGO_I7_ANI[] = &quot;/protect_f/sysBoot_logo_samsun.dat&quot;;/* * Show kernel logo when phone boot up * */void show_kernel_logo()&#123; SLOGD(&quot;[libshowlogo: %s %d]show kernel logo, index = 38 \n&quot;,__FUNCTION__,__LINE__); if (error_flag == 0) &#123; if(open(LOGO_ON5_ANI,O_RDONLY) &gt;= 0) &#123; anim_show_logo(kernel_logo_position+1); property_set(&quot;ani_type&quot;,&quot;custom&quot;); property_set(&quot;animation_num&quot;,&quot;On5_Ani&quot;); &#125;else if (open(LOGO_I7_ANI,O_RDONLY) &gt;= 0) &#123; anim_show_logo(kernel_logo_position+2); property_set(&quot;ani_type&quot;,&quot;custom&quot;); property_set(&quot;animation_num&quot;,&quot;I7_Ani&quot;); &#125;else&#123; anim_show_logo(kernel_logo_position); property_set(&quot;ani_type&quot;,&quot;android&quot;); property_set(&quot;animtion_num&quot;,&quot;android&quot;); &#125; &#125;&#125; framworks/base/cmds/bootanimation/BootAnimation.cpp文件中，在void BootAnimation::initBootanimationZip()方法中添加切换动画 1234567891011121314151617181920212223#endif char anitype[PROPERTY_VALUE_MAX]; char aninum[PROPERTY_VALUE_MAX]; property_get(&quot;ani_type&quot;,anitype,&quot;&quot;); property_get(&quot;animation_num&quot;,aninum,&quot;&quot;); if (strcmp(&quot;custom&quot;,anitype) == 0) &#123; if (strcmp(&quot;On5_Ani&quot;, aninum)==0) &#123; if (access(&quot;/system/media/bootanimation_custom.zip&quot;, R_OK) == 0) &#123; if ((zipFile = ZipFileRO::open(&quot;/system/media/bootanimation_custom.zip&quot;)) != NULL) &#123; mZip = zipFile; &#125; &#125; &#125;else if (strcmp(&quot;I7_Ani&quot;, aninum)==0)&#123; if (access(&quot;/system/media/bootanimation_s6.zip&quot;, R_OK) == 0) &#123; if ((zipFile = ZipFileRO::open(&quot;/system/media/bootanimation_s6.zip&quot;)) != NULL) &#123; mZip = zipFile; &#125; &#125; &#125; &#125; if (zipFile == NULL) &#123; 到这里功能基本就可以实现了。]]></content>
       <categories>
-          
-          <category> 系统修改 </category>
-          
+        <category>系统修改</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> MTK </tag>
-            
-            <tag> 系统修改 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
-      <title>android系统修改</title>
-      <link href="/2018/07/27/android%E7%B3%BB%E7%BB%9F%E4%BF%AE%E6%94%B9/"/>
-      <url>/2018/07/27/android%E7%B3%BB%E7%BB%9F%E4%BF%AE%E6%94%B9/</url>
-      <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>以下都是基于mtk平台，系统相关修改点，在此记录。</p><a id="more"></a><ol><li>修改wifi信号强度<br>framwork/base/wifi/java/android/net/wifi/WifiManager.java 修改culculateSignalLevel方法中的rssi</li><li>3G信号强度修改<br>vendor/mediatek/proprietary/frameworks/base/packages/FwkPlugin/src/com/mediatek/op/telephony/DefaultServiceStateExt.java </li><li>dex2oat优化模式<br>frameworks/native/cmds/installd/commands.cpp<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">strcpy(dex2oat_compiler_filter_arg, &quot;--compiler-filter=interpret-only&quot;);</span><br><span class="line">have_dex2oat_compiler_filter_flag = true;</span><br></pre></td></tr></table></figure></li></ol><p>修改模式为interpret-only，烧录开机时间加快，安装播放器之类的大型应用速度加快</p><ol start="4"><li>设置中打印项修改<br>packages/apps/Settings/src/com/android/settings/print/PrintSettingsFragment.java</li><li>蓝牙wifi名称修改<br>device/mediatek/common/custom.conf     </li><li>imei相关<br>vendor/mediatek/proprietary/packages/apps/EngineerMode/src/com/mediatek/engineermode/SsWriteImeiActivity.java<br>vendor/mediatek/proprietary/packages/apps/EngineerMode/src/com/mediatek/engineermode/GPRS.java</li><li>机型名称<br>build/tools/buildinfo.sh<br>修改ro.product.model=“要修改的型号”</li><li>设置中内核信息和版本号<br>packages/apps/Settings/src/com/android/settings/DeviceInfoSettings.java</li><li>BUILD_VERNO修改<br>MTK_BUILD_VERNO = alps-mp-m0.mp1-V2.115</li><li><p>去掉开机引导<br>packages/apps/Launcher3/src/com/android/launcher3/Launcher.java<br>注释launcherClings.showLongPressCling(true)<br>11.隐藏设置中的某一项<br>packages/apps/Settings/src/com/android/settings/SettingsActivity.java</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    Bundle metaData = activityInfo.metaData;</span><br><span class="line">-   if ((metaData == null) || !metaData.containsKey(EXTRA_CATEGORY_KEY)) &#123;</span><br><span class="line">+   /*if ((metaData == null) || !metaData.containsKey(EXTRA_CATEGORY_KEY)) &#123;*/    // add by wxd for hide google in settings</span><br><span class="line">+   if ((metaData == null) || !metaData.containsKey(EXTRA_CATEGORY_KEY) || activityInfo.packageName.equals(&quot;com.google.android.gms&quot;)) &#123;</span><br></pre></td></tr></table></figure></li><li><p>修改默认横屏<br>framwork/base/services/core/java/com/android/server/policy/PhoneWindowManager.java<br>修改rotationForOrientationLw方法，直接返回Surface.ROTATION_90</p></li><li>修改hotseat横屏时在底部</li></ol>]]></content>
-      
+      <tags>
+        <tag>MTK</tag>
+        <tag>系统修改</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[android系统修改]]></title>
+    <url>%2F2018%2F07%2F27%2Fandroid%E7%B3%BB%E7%BB%9F%E4%BF%AE%E6%94%B9%2F</url>
+    <content type="text"><![CDATA[前言以下都是基于mtk平台，系统相关修改点，在此记录。 修改wifi信号强度framwork/base/wifi/java/android/net/wifi/WifiManager.java 修改culculateSignalLevel方法中的rssi 3G信号强度修改vendor/mediatek/proprietary/frameworks/base/packages/FwkPlugin/src/com/mediatek/op/telephony/DefaultServiceStateExt.java dex2oat优化模式frameworks/native/cmds/installd/commands.cpp12strcpy(dex2oat_compiler_filter_arg, &quot;--compiler-filter=interpret-only&quot;);have_dex2oat_compiler_filter_flag = true; 修改模式为interpret-only，烧录开机时间加快，安装播放器之类的大型应用速度加快 设置中打印项修改packages/apps/Settings/src/com/android/settings/print/PrintSettingsFragment.java 蓝牙wifi名称修改device/mediatek/common/custom.conf imei相关vendor/mediatek/proprietary/packages/apps/EngineerMode/src/com/mediatek/engineermode/SsWriteImeiActivity.javavendor/mediatek/proprietary/packages/apps/EngineerMode/src/com/mediatek/engineermode/GPRS.java 机型名称build/tools/buildinfo.sh修改ro.product.model=“要修改的型号” 设置中内核信息和版本号packages/apps/Settings/src/com/android/settings/DeviceInfoSettings.java BUILD_VERNO修改MTK_BUILD_VERNO = alps-mp-m0.mp1-V2.115 去掉开机引导packages/apps/Launcher3/src/com/android/launcher3/Launcher.java注释launcherClings.showLongPressCling(true)11.隐藏设置中的某一项packages/apps/Settings/src/com/android/settings/SettingsActivity.java 1234 Bundle metaData = activityInfo.metaData;- if ((metaData == null) || !metaData.containsKey(EXTRA_CATEGORY_KEY)) &#123;+ /*if ((metaData == null) || !metaData.containsKey(EXTRA_CATEGORY_KEY)) &#123;*/ // add by wxd for hide google in settings+ if ((metaData == null) || !metaData.containsKey(EXTRA_CATEGORY_KEY) || activityInfo.packageName.equals(&quot;com.google.android.gms&quot;)) &#123; 修改默认横屏framwork/base/services/core/java/com/android/server/policy/PhoneWindowManager.java修改rotationForOrientationLw方法，直接返回Surface.ROTATION_9013.修改launcher中控件的位置可在14.修改设备在路由器那边的显示名称frameworks/base/services/java/com/android/server/ConnectivityService.java中生成 : 123456// setup our unique device nameString id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);if (id != null &amp;&amp; id.length() &gt; 0) &#123; String name = new String(&quot;android_&quot;).concat(id); SystemProperties.set(&quot;net.hostname&quot;, name);&#125; 如果需要自己定义，可以注释掉这一段，然后在system.prop中定义 net.hostname=xxxxxx需要注意的是hostname不能带空格，不然dhcp那边会有问题。 15.修改wifip2p 16.修改wifi热点名称]]></content>
       <categories>
-          
-          <category> 系统修改 </category>
-          
+        <category>系统修改</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> MTK - 系统修改 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
-      <title>markdown语法</title>
-      <link href="/2018/06/23/markdown%E8%AF%AD%E6%B3%95/"/>
-      <url>/2018/06/23/markdown%E8%AF%AD%E6%B3%95/</url>
-      <content type="html"><![CDATA[]]></content>
-      
+      <tags>
+        <tag>MTK - 系统修改</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[markdown语法]]></title>
+    <url>%2F2018%2F06%2F23%2Fmarkdown%E8%AF%AD%E6%B3%95%2F</url>
+    <content type="text"></content>
       <categories>
-          
-          <category> markdown语法 </category>
-          
+        <category>markdown语法</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> markdown </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
-      <title>hexo多终端同步管理</title>
-      <link href="/2018/06/23/hexo%E5%A4%9A%E7%BB%88%E7%AB%AF%E5%90%8C%E6%AD%A5%E7%AE%A1%E7%90%86/"/>
-      <url>/2018/06/23/hexo%E5%A4%9A%E7%BB%88%E7%AB%AF%E5%90%8C%E6%AD%A5%E7%AE%A1%E7%90%86/</url>
-      <content type="html"><![CDATA[<p>前几天使用hexo搭建了Github博客，今天在家里的电脑上想要同步Github博客到本地，同时达到备份博客主题、文章、配置时，遇到了点坑，查询了 一下网上的资料，现在记录一下，也算给遇到同样问题的小伙伴们一个参考。</p><a id="more"></a><h2 id="创建新分支"><a href="#创建新分支" class="headerlink" title="创建新分支"></a>创建新分支</h2><ul><li><p>hexo使用命令<code>hexo g</code>(生成静态文件)和<code>hexo d</code>(部署到github)，这些生成的文件会放在master分支上，如图：</p><img src="/2018/06/23/hexo多终端同步管理/root_config.png"></li><li><p>所以我们新创建hexo分支，将Hexo配置写博客用的相关源文件放在hexo分支上，多终端的同步只需要对分支hexo进行操作</p><img src="/2018/06/23/hexo多终端同步管理/create_branch.png"></li><li><p>将hexo分支设为默认分支</p><img src="/2018/06/23/hexo多终端同步管理/default_branch.png"></li></ul><h2 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h2><ol><li>将刚刚创建的新仓库clone到本地，<code>git clone https://github.com/yourname/yourname.github.io</code>,将之前的blog中的<code>_config.xml</code>,<code>themes</code>,<code>sources</code>,<code>scaffolds</code>,<code>package.json</code>,<code>.gitignore</code>,复制到yourname.github.io文件夹中;</li><li>将themes/next/(我用的是NexT主题)中的.git/删除，否则无法将主题文件夹push；</li><li>在yourname.github.io文件夹执行<code>npm install</code>和<code>npm install hexo-deployer-git</code>（这里可以看一看分支是不是显示为hexo）；</li><li>执行<code>git add .</code>、<code>git commit -m &quot;&quot;</code>、<code>git push origin hexo</code>提交hexo网站源文件到github</li><li>执行<code>hexo g -d</code>生成静态网页部署至github</li></ol><p>这样一来yourname.github.io仓库就有master分支和hexo分支，分别保存静态网页和源文件</p><h2 id="恢复"><a href="#恢复" class="headerlink" title="恢复"></a>恢复</h2><p>在其他电脑上修改博客:</p><ol><li>安装node.js和npm</li><li>安装git</li><li>执行<code>git clone https://github.com/yourname/yourname.github.io</code>将仓库clone到本地</li><li>在文件夹内执行以下命令<code>npm install hexo-cli -g</code>、<code>npm install</code>、<code>npm install hexo-deployer-git</code></li></ol><blockquote><p>注意: 千万不要执行<code>hexo init</code>，不然之前的hexo配置都会被重置</p></blockquote><h2 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h2><p>每次在要编辑博客之前，执行<code>git pull</code>，保证本地和服务器同步<br>在本地对博客修改（包括修改主题样式、发布新文章等）后：</p><ol><li>依次执行<code>git add .</code>、<code>git commit -m &quot;&quot;</code>、<code>git push origin hexo</code>来提交hexo网站源文件；</li><li>执行<code>hexo g -d</code>生成静态网页部署至Github上。</li></ol><p>即重复备份的7-8步骤</p><p>好了，到这里多终端同步管理就完工了，如若文中有什么地方有错，还请留言告知，谢谢！</p><p>参考:<br><a href="https://blog.csdn.net/Monkey_LZL/article/details/60870891" target="_blank" rel="noopener">如何解决github+Hexo的博客多终端同步问题</a><br><a href="https://www.imooc.com/article/9707?block_id=tuijian_wz" target="_blank" rel="noopener">Hexo搭建博客并实现多终端同步管理</a><br><a href="https://www.jianshu.com/p/6fb0b287f950" target="_blank" rel="noopener">Hexo博客的跨设备同步</a></p>]]></content>
-      
+      <tags>
+        <tag>markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[hexo多终端同步管理]]></title>
+    <url>%2F2018%2F06%2F23%2Fhexo%E5%A4%9A%E7%BB%88%E7%AB%AF%E5%90%8C%E6%AD%A5%E7%AE%A1%E7%90%86%2F</url>
+    <content type="text"><![CDATA[前几天使用hexo搭建了Github博客，今天在家里的电脑上想要同步Github博客到本地，同时达到备份博客主题、文章、配置时，遇到了点坑，查询了 一下网上的资料，现在记录一下，也算给遇到同样问题的小伙伴们一个参考。 创建新分支 hexo使用命令hexo g(生成静态文件)和hexo d(部署到github)，这些生成的文件会放在master分支上，如图： 所以我们新创建hexo分支，将Hexo配置写博客用的相关源文件放在hexo分支上，多终端的同步只需要对分支hexo进行操作 将hexo分支设为默认分支 备份 将刚刚创建的新仓库clone到本地，git clone https://github.com/yourname/yourname.github.io,将之前的blog中的_config.xml,themes,sources,scaffolds,package.json,.gitignore,复制到yourname.github.io文件夹中; 将themes/next/(我用的是NexT主题)中的.git/删除，否则无法将主题文件夹push； 在yourname.github.io文件夹执行npm install和npm install hexo-deployer-git（这里可以看一看分支是不是显示为hexo）； 执行git add .、git commit -m &quot;&quot;、git push origin hexo提交hexo网站源文件到github 执行hexo g -d生成静态网页部署至github 这样一来yourname.github.io仓库就有master分支和hexo分支，分别保存静态网页和源文件 恢复在其他电脑上修改博客: 安装node.js和npm 安装git 执行git clone https://github.com/yourname/yourname.github.io将仓库clone到本地 在文件夹内执行以下命令npm install hexo-cli -g、npm install、npm install hexo-deployer-git 注意: 千万不要执行hexo init，不然之前的hexo配置都会被重置 修改每次在要编辑博客之前，执行git pull，保证本地和服务器同步在本地对博客修改（包括修改主题样式、发布新文章等）后： 依次执行git add .、git commit -m &quot;&quot;、git push origin hexo来提交hexo网站源文件； 执行hexo g -d生成静态网页部署至Github上。 即重复备份的7-8步骤 好了，到这里多终端同步管理就完工了，如若文中有什么地方有错，还请留言告知，谢谢！ 参考:如何解决github+Hexo的博客多终端同步问题Hexo搭建博客并实现多终端同步管理Hexo博客的跨设备同步]]></content>
       <categories>
-          
-          <category> Hexo教程 </category>
-          
+        <category>Hexo教程</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> hexo </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
-      <title>hexo入门(二):关联github</title>
-      <link href="/2018/06/21/hexo%E5%85%A5%E9%97%A8-%E4%BA%8C/"/>
-      <url>/2018/06/21/hexo%E5%85%A5%E9%97%A8-%E4%BA%8C/</url>
-      <content type="html"><![CDATA[<p>前篇文章描述了如何搭建hexo本地环境，本篇文章内容记录如何把博客发布到github上，并利用GitHub Pages完成博客的部署</p><a id="more"></a><p>嗯，相信大家都有github账号了，如果还没有的小伙伴赶快创建一个吧。</p><h2 id="创建一个新的仓库"><a href="#创建一个新的仓库" class="headerlink" title="创建一个新的仓库"></a>创建一个新的仓库</h2><img src="/2018/06/21/hexo入门-二/new_repository.png"><blockquote><p>注意: Respository name 中的 username.github.io 的 username 一定与前面的 Owner 保持一致，例如我的是wxiangdong.github.io</p></blockquote><h2 id="配置Github"><a href="#配置Github" class="headerlink" title="配置Github"></a>配置Github</h2><p>现在我们需要编辑blog文件夹下的_config.xml文件(根目录下的)，与自己 Github 账号的 Repository 仓库建立关联。<br>通过编辑器打开,修改如下内容<br><img src="/2018/06/21/hexo入门-二/root_config.png"></p><p>将其中的username修改成你自己的，记得保存，注意配置的键值对之间一定要有空格。</p><h2 id="自动部署"><a href="#自动部署" class="headerlink" title="自动部署"></a>自动部署</h2><p>配置文件修改完成以后，执行命令，完成自动部署：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure></p><p>这样就将你的博客上传至你的github仓库中，可以进入你的github账户查看。在浏览器中输入 username.github.io预览</p><h2 id="hexo绑定域名"><a href="#hexo绑定域名" class="headerlink" title="hexo绑定域名"></a>hexo绑定域名</h2><p>我的hexo博客是托管在github上的，每次访问都要使用githubname.github.io这么长的域名来访问，所以我在<a href="https://wanwang.aliyun.com/" target="_blank" rel="noopener">万网</a>上买了一个.xyz的域名</p><ul><li><p>点击对应的解析设置</p><img src="/2018/06/21/hexo入门-二/yunming_jiexi.png"></li><li><p>点击添加记录，记录类型选A或CNAME，A记录的记录值就是ip地址，github(官方文档)提供了两个IP地址，192.30.252.153和192.30.252.154，这两个IP地址为github的服务器地址，两个都要填上，解析记录设置两个www和@，线路就默认就行了.</p></li></ul><img src="/2018/06/21/hexo入门-二/record.png"><ul><li>在source文件夹里创建CNAME文件，不带任何后缀，里面添加你的域名信息，如：wangxiangdong.xyz</li></ul><img src="/2018/06/21/hexo入门-二/c_name.png"><blockquote><p>注意: 最好不要添加<a href="http://www.wangxiangdong.xyz，如果添加了就只能用www.wangxiangdong.xyz访问了，如果填写的是wangxiangdong.xyz，那么用www.wangxiangdong.xyz和wangxiangdong.xyz访问都是可以的" target="_blank" rel="noopener">www.wangxiangdong.xyz，如果添加了就只能用www.wangxiangdong.xyz访问了，如果填写的是wangxiangdong.xyz，那么用www.wangxiangdong.xyz和wangxiangdong.xyz访问都是可以的</a></p></blockquote><p>然后清理hexo,发布试试吧<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo d -g</span><br></pre></td></tr></table></figure></p>]]></content>
-      
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[hexo入门(二):关联github]]></title>
+    <url>%2F2018%2F06%2F21%2Fhexo%E5%85%A5%E9%97%A8-%E4%BA%8C%2F</url>
+    <content type="text"><![CDATA[前篇文章描述了如何搭建hexo本地环境，本篇文章内容记录如何把博客发布到github上，并利用GitHub Pages完成博客的部署 嗯，相信大家都有github账号了，如果还没有的小伙伴赶快创建一个吧。 创建一个新的仓库 注意: Respository name 中的 username.github.io 的 username 一定与前面的 Owner 保持一致，例如我的是wxiangdong.github.io 配置Github现在我们需要编辑blog文件夹下的_config.xml文件(根目录下的)，与自己 Github 账号的 Repository 仓库建立关联。通过编辑器打开,修改如下内容 将其中的username修改成你自己的，记得保存，注意配置的键值对之间一定要有空格。 自动部署配置文件修改完成以后，执行命令，完成自动部署：123hexo cleanhexo ghexo d 这样就将你的博客上传至你的github仓库中，可以进入你的github账户查看。在浏览器中输入 username.github.io预览 hexo绑定域名我的hexo博客是托管在github上的，每次访问都要使用githubname.github.io这么长的域名来访问，所以我在万网上买了一个.xyz的域名 点击对应的解析设置 点击添加记录，记录类型选A或CNAME，A记录的记录值就是ip地址，github(官方文档)提供了两个IP地址，192.30.252.153和192.30.252.154，这两个IP地址为github的服务器地址，两个都要填上，解析记录设置两个www和@，线路就默认就行了. 在source文件夹里创建CNAME文件，不带任何后缀，里面添加你的域名信息，如：wangxiangdong.xyz 注意: 最好不要添加www.wangxiangdong.xyz，如果添加了就只能用www.wangxiangdong.xyz访问了，如果填写的是wangxiangdong.xyz，那么用www.wangxiangdong.xyz和wangxiangdong.xyz访问都是可以的 然后清理hexo,发布试试吧12hexo cleanhexo d -g]]></content>
       <categories>
-          
-          <category> Hexo教程 </category>
-          
+        <category>Hexo教程</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> javascript </tag>
-            
-            <tag> hexo </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
-      <title>hexo入门(一):hexo环境搭建</title>
-      <link href="/2018/06/21/hexo%E5%85%A5%E9%97%A8(%E4%B8%80)/"/>
-      <url>/2018/06/21/hexo%E5%85%A5%E9%97%A8(%E4%B8%80)/</url>
-      <content type="html"><![CDATA[<p>前几天偶然看到一个朋友blog，感觉很流弊的样子，便在网上查找了一些<a href="https://hexo.io/" target="_blank" rel="noopener">hexo</a>和<a href="https://github.com/" target="_blank" rel="noopener">Github</a>搭建静态博客的教程，加上之前在万网购买的.xyz域名，于是我的个人blog诞生了。<br>以下是在windows环境操作</p><hr><a id="more"></a><h2 id="安装node-js"><a href="#安装node-js" class="headerlink" title="安装node.js"></a>安装node.js</h2><p>首先登录<a href="https://nodejs.org/en/" target="_blank" rel="noopener">node.js官网</a>，选择适合自己的版本下载，然后安装。(你也可以参考hexo官网的方法)</p><h2 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h2><p>登录<a href="https://git-scm.com/" target="_blank" rel="noopener">git官网</a>选择版本下载，一路next即可完成安装。</p><blockquote><p>注意: 安装过程中，注意勾选在右键菜单建立git bash快捷方式一项，因为之后的各种操作都需要在git bash中用命令行进行操作，方便随时随地打开命令窗口。</p></blockquote><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><p>在电脑任意空白处点击右键，选择Git Bash Here打开命令行</p><blockquote><p>npm install -g cnpm –registry=<a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a></p></blockquote><p>然后就可以使用下面的命令从npm安装Hexo：</p><blockquote><p>npm install hexo-cli -g</p></blockquote><h2 id="初始化Hexo"><a href="#初始化Hexo" class="headerlink" title="初始化Hexo"></a>初始化Hexo</h2><p>安装完成之后，就可以选择一个自己的文件夹作为博客的根目录( 例如 D:\blog ),然后在该目录下打开命令行</p><blockquote><p>hexo init</p></blockquote><p>初始化博客空间，生成博客运作所需要的文件，接下来安装依赖包</p><blockquote><p>npm install</p></blockquote><p>此时，你的文件夹下的目录结构应该是这样：<br><img src="/images/hexo_init.png" alt=""></p><h2 id="本地运行"><a href="#本地运行" class="headerlink" title="本地运行"></a>本地运行</h2><blockquote><p>hexo g<br>hexo s</p></blockquote><p>在浏览器地址栏输入<a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a>,按下回车键，准备好迎接美丽的新领域吧。</p><h2 id="Hexo的一些基本命令"><a href="#Hexo的一些基本命令" class="headerlink" title="Hexo的一些基本命令"></a>Hexo的一些基本命令</h2><blockquote><p>hexo g #完整命令为hexo generate,用于生成静态文件<br>hexo s #完整命令为hexo server,用于启动服务器，主要用来本地预览<br>hexo d #完整命令为hexo deploy,用于将本地文件发布到github等git仓库上<br>hexo n “my article” #完整命令为hexo new,用于新建一篇名为“my article”的文章</p></blockquote><h2 id="发布一篇新文章"><a href="#发布一篇新文章" class="headerlink" title="发布一篇新文章"></a>发布一篇新文章</h2><p>首先Ctrl+C停止当前的本地服务，然后</p><blockquote><p>hexo n “my article”</p></blockquote><p>这样就会在博客目录下source_posts中生成相应的 我的第一篇文章.md文件( 例如 D:\blog\source_posts\my article.md )</p><p>编辑完成后就可以进行本地预览</p><blockquote><p>hexo g<br>hexo s</p></blockquote><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>到目前为止利用Hexo搭建本地环境已经完成，下一节将要开始把博客发布到github上，并利用GitHub Pages完成博客的部署。</p>]]></content>
-      
+      <tags>
+        <tag>javascript</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[hexo入门(一):hexo环境搭建]]></title>
+    <url>%2F2018%2F06%2F21%2Fhexo%E5%85%A5%E9%97%A8(%E4%B8%80)%2F</url>
+    <content type="text"><![CDATA[前几天偶然看到一个朋友blog，感觉很流弊的样子，便在网上查找了一些hexo和Github搭建静态博客的教程，加上之前在万网购买的.xyz域名，于是我的个人blog诞生了。以下是在windows环境操作 安装node.js首先登录node.js官网，选择适合自己的版本下载，然后安装。(你也可以参考hexo官网的方法) 安装Git登录git官网选择版本下载，一路next即可完成安装。 注意: 安装过程中，注意勾选在右键菜单建立git bash快捷方式一项，因为之后的各种操作都需要在git bash中用命令行进行操作，方便随时随地打开命令窗口。 安装Hexo在电脑任意空白处点击右键，选择Git Bash Here打开命令行 npm install -g cnpm –registry=https://registry.npm.taobao.org 然后就可以使用下面的命令从npm安装Hexo： npm install hexo-cli -g 初始化Hexo安装完成之后，就可以选择一个自己的文件夹作为博客的根目录( 例如 D:\blog ),然后在该目录下打开命令行 hexo init 初始化博客空间，生成博客运作所需要的文件，接下来安装依赖包 npm install 此时，你的文件夹下的目录结构应该是这样： 本地运行 hexo ghexo s 在浏览器地址栏输入http://localhost:4000/,按下回车键，准备好迎接美丽的新领域吧。 Hexo的一些基本命令 hexo g #完整命令为hexo generate,用于生成静态文件hexo s #完整命令为hexo server,用于启动服务器，主要用来本地预览hexo d #完整命令为hexo deploy,用于将本地文件发布到github等git仓库上hexo n “my article” #完整命令为hexo new,用于新建一篇名为“my article”的文章 发布一篇新文章首先Ctrl+C停止当前的本地服务，然后 hexo n “my article” 这样就会在博客目录下source_posts中生成相应的 我的第一篇文章.md文件( 例如 D:\blog\source_posts\my article.md ) 编辑完成后就可以进行本地预览 hexo ghexo s 总结到目前为止利用Hexo搭建本地环境已经完成，下一节将要开始把博客发布到github上，并利用GitHub Pages完成博客的部署。]]></content>
       <categories>
-          
-          <category> Hexo教程 </category>
-          
+        <category>Hexo教程</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> javascript </tag>
-            
-            <tag> hexo </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
-      <title>欢迎使用Markdown编辑器写博客</title>
-      <link href="/2018/06/20/csdn-markdown/"/>
-      <url>/2018/06/20/csdn-markdown/</url>
-      <content type="html"><![CDATA[<p>本Markdown编辑器使用<a href="https://github.com/benweet/stackedit" target="_blank" rel="noopener">StackEdit</a>修改而来，用它写博客，将会带来全新的体验哦：</p><ul><li><strong>Markdown和扩展Markdown简洁的语法</strong></li><li><strong>代码块高亮</strong></li><li><strong>图片链接和图片上传</strong></li><li><strong><em>LaTex</em>数学公式</strong></li><li><strong>UML序列图和流程图</strong></li><li><strong>离线写博客</strong></li><li><strong>导入导出Markdown文件</strong> </li><li><strong>丰富的快捷键</strong></li><li><strong>你好啊</strong></li></ul><hr><a id="more"></a><h1 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h1><ul><li>加粗    <code>Ctrl + B</code> </li><li>斜体    <code>Ctrl + I</code> </li><li>引用    <code>Ctrl + Q</code></li><li>插入链接    <code>Ctrl + L</code></li><li>插入代码    <code>Ctrl + K</code></li><li>插入图片    <code>Ctrl + G</code></li><li>提升标题    <code>Ctrl + H</code></li><li>有序列表    <code>Ctrl + O</code></li><li>无序列表    <code>Ctrl + U</code></li><li>横线    <code>Ctrl + R</code></li><li>撤销    <code>Ctrl + Z</code></li><li>重做    <code>Ctrl + Y</code></li></ul><h1 id="Markdown及扩展"><a href="#Markdown及扩展" class="headerlink" title="Markdown及扩展"></a>Markdown及扩展</h1><blockquote><p>Markdown 是一种轻量级标记语言，它允许人们使用易读易写的纯文本格式编写文档，然后转换成格式丰富的HTML页面。    —— <a href="https://zh.wikipedia.org/wiki/Markdown" target="_blank"> [ 维基百科 ]</a></p></blockquote><p>使用简单的符号标识不同的标题，将某些文字标记为<strong>粗体</strong>或者<em>斜体</em>，创建一个<a href="http://www.csdn.net" target="_blank" rel="noopener">链接</a>等，详细语法参考帮助？。</p><p>本编辑器支持 <strong>Markdown Extra</strong> , 　扩展了很多好用的功能。具体请参考<a href="https://github.com/jmcmanus/pagedown-extra" title="Pagedown Extra" target="_blank" rel="noopener">Github</a>.  </p><h2 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h2><p><strong>Markdown　Extra</strong>　表格语法：</p><table><thead><tr><th>项目</th><th>价格</th></tr></thead><tbody><tr><td>Computer</td><td>$1600</td></tr><tr><td>Phone</td><td>$12</td></tr><tr><td>Pipe</td><td>$1</td></tr></tbody></table><p>可以使用冒号来定义对齐方式：</p><table><thead><tr><th style="text-align:left">项目</th><th style="text-align:right">价格</th><th style="text-align:center">数量</th></tr></thead><tbody><tr><td style="text-align:left">Computer</td><td style="text-align:right">1600 元</td><td style="text-align:center">5</td></tr><tr><td style="text-align:left">Phone</td><td style="text-align:right">12 元</td><td style="text-align:center">12</td></tr><tr><td style="text-align:left">Pipe</td><td style="text-align:right">1 元</td><td style="text-align:center">234</td></tr></tbody></table><p>##定义列表</p><p><strong>Markdown　Extra</strong>　定义列表语法：<br>项目１<br>项目２<br>:   定义 A<br>:   定义 B</p><p>项目３<br>:   定义 C</p><p>:   定义 D</p><pre><code>&gt; 定义D内容</code></pre><h2 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h2><p>代码块语法遵循标准markdown代码，例如：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@requires_authorization</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">somefunc</span><span class="params">(param1=<span class="string">''</span>, param2=<span class="number">0</span>)</span>:</span></span><br><span class="line">    <span class="string">'''A docstring'''</span></span><br><span class="line">    <span class="keyword">if</span> param1 &gt; param2: <span class="comment"># interesting</span></span><br><span class="line">        <span class="keyword">print</span> <span class="string">'Greater'</span></span><br><span class="line">    <span class="keyword">return</span> (param2 - param1 + <span class="number">1</span>) <span class="keyword">or</span> <span class="keyword">None</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>message = <span class="string">'''interpreter</span></span><br><span class="line"><span class="string"><span class="meta">... </span>prompt'''</span></span><br></pre></td></tr></table></figure></p><p>##脚注<br>生成一个脚注[^footnote].<br>  [^footnote]: 这里是 <strong>脚注</strong> 的 <em>内容</em>.</p><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p>用 <code>[TOC]</code>来生成目录：</p><p>[TOC]</p><h2 id="数学公式"><a href="#数学公式" class="headerlink" title="数学公式"></a>数学公式</h2><p>使用MathJax渲染<em>LaTex</em> 数学公式，详见<a href="http://math.stackexchange.com/" target="_blank" rel="noopener">math.stackexchange.com</a>.</p><ul><li>行内公式，数学公式为：$\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N$。</li><li>块级公式：</li></ul><p>$$    x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$</p><p>更多LaTex语法请参考 <a href="http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference" target="_blank" rel="noopener">这儿</a>.</p><h2 id="UML-图"><a href="#UML-图" class="headerlink" title="UML 图:"></a>UML 图:</h2><p>可以渲染序列图：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">张三-&gt;李四: 嘿，小四儿, 写博客了没?</span><br><span class="line">Note right of 李四: 李四愣了一下，说：</span><br><span class="line">李四--&gt;张三: 忙得吐血，哪有时间写。</span><br></pre></td></tr></table></figure><p>或者流程图：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">st=&gt;start: 开始</span><br><span class="line">e=&gt;end: 结束</span><br><span class="line">op=&gt;operation: 我的操作</span><br><span class="line">cond=&gt;condition: 确认？</span><br><span class="line"></span><br><span class="line">st-&gt;op-&gt;cond</span><br><span class="line">cond(yes)-&gt;e</span><br><span class="line">cond(no)-&gt;op</span><br></pre></td></tr></table></figure><ul><li>关于 <strong>序列图</strong> 语法，参考 <a href="http://bramp.github.io/js-sequence-diagrams/" target="_blank" rel="noopener">这儿</a>,</li><li>关于 <strong>流程图</strong> 语法，参考 <a href="http://adrai.github.io/flowchart.js/" target="_blank" rel="noopener">这儿</a>.</li></ul><h1 id="离线写博客"><a href="#离线写博客" class="headerlink" title="离线写博客"></a>离线写博客</h1><p>即使用户在没有网络的情况下，也可以通过本编辑器离线写博客（直接在曾经使用过的浏览器中输入<a href="http://write.blog.csdn.net/mdeditor" target="_blank" rel="noopener">write.blog.csdn.net/mdeditor</a>即可。<strong>Markdown编辑器</strong>使用浏览器离线存储将内容保存在本地。</p><p>用户写博客的过程中，内容实时保存在浏览器缓存中，在用户关闭浏览器或者其它异常情况下，内容不会丢失。用户再次打开浏览器时，会显示上次用户正在编辑的没有发表的内容。</p><p>博客发表后，本地缓存将被删除。　</p><p>用户可以选择 <i class="icon-disk"></i> 把正在写的博客保存到服务器草稿箱，即使换浏览器或者清除缓存，内容也不会丢失。</p><blockquote><p><strong>注意：</strong>虽然浏览器存储大部分时候都比较可靠，但为了您的数据安全，在联网后，<strong>请务必及时发表或者保存到服务器草稿箱</strong>。</p></blockquote><p>#浏览器兼容</p><ol><li>目前，本编辑器对Chrome浏览器支持最为完整。建议大家使用较新版本的Chrome。</li><li>IE９以下不支持</li><li>IE９，１０，１１存在以下问题<ol><li>不支持离线功能</li><li>IE9不支持文件导入导出</li><li>IE10不支持拖拽文件导入</li></ol></li></ol><hr>]]></content>
-      
+      <tags>
+        <tag>javascript</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[欢迎使用Markdown编辑器写博客]]></title>
+    <url>%2F2018%2F06%2F20%2Fcsdn-markdown%2F</url>
+    <content type="text"><![CDATA[本Markdown编辑器使用StackEdit修改而来，用它写博客，将会带来全新的体验哦： Markdown和扩展Markdown简洁的语法 代码块高亮 图片链接和图片上传 LaTex数学公式 UML序列图和流程图 离线写博客 导入导出Markdown文件 丰富的快捷键 你好啊 快捷键 加粗 Ctrl + B 斜体 Ctrl + I 引用 Ctrl + Q 插入链接 Ctrl + L 插入代码 Ctrl + K 插入图片 Ctrl + G 提升标题 Ctrl + H 有序列表 Ctrl + O 无序列表 Ctrl + U 横线 Ctrl + R 撤销 Ctrl + Z 重做 Ctrl + Y Markdown及扩展 Markdown 是一种轻量级标记语言，它允许人们使用易读易写的纯文本格式编写文档，然后转换成格式丰富的HTML页面。 —— [ 维基百科 ] 使用简单的符号标识不同的标题，将某些文字标记为粗体或者斜体，创建一个链接等，详细语法参考帮助？。 本编辑器支持 Markdown Extra , 扩展了很多好用的功能。具体请参考Github. 表格Markdown Extra 表格语法： 项目 价格 Computer $1600 Phone $12 Pipe $1 可以使用冒号来定义对齐方式： 项目 价格 数量 Computer 1600 元 5 Phone 12 元 12 Pipe 1 元 234 ##定义列表 Markdown Extra 定义列表语法：项目１项目２: 定义 A: 定义 B 项目３: 定义 C : 定义 D &gt; 定义D内容 代码块代码块语法遵循标准markdown代码，例如：12345678910@requires_authorizationdef somefunc(param1='', param2=0): '''A docstring''' if param1 &gt; param2: # interesting print 'Greater' return (param2 - param1 + 1) or Noneclass SomeClass: pass&gt;&gt;&gt; message = '''interpreter... prompt''' ##脚注生成一个脚注[^footnote]. [^footnote]: 这里是 脚注 的 内容. 目录用 [TOC]来生成目录： [TOC] 数学公式使用MathJax渲染LaTex 数学公式，详见math.stackexchange.com. 行内公式，数学公式为：$\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N$。 块级公式： $$ x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$ 更多LaTex语法请参考 这儿. UML 图:可以渲染序列图： 123张三-&gt;李四: 嘿，小四儿, 写博客了没?Note right of 李四: 李四愣了一下，说：李四--&gt;张三: 忙得吐血，哪有时间写。 或者流程图： 12345678st=&gt;start: 开始e=&gt;end: 结束op=&gt;operation: 我的操作cond=&gt;condition: 确认？st-&gt;op-&gt;condcond(yes)-&gt;econd(no)-&gt;op 关于 序列图 语法，参考 这儿, 关于 流程图 语法，参考 这儿. 离线写博客即使用户在没有网络的情况下，也可以通过本编辑器离线写博客（直接在曾经使用过的浏览器中输入write.blog.csdn.net/mdeditor即可。Markdown编辑器使用浏览器离线存储将内容保存在本地。 用户写博客的过程中，内容实时保存在浏览器缓存中，在用户关闭浏览器或者其它异常情况下，内容不会丢失。用户再次打开浏览器时，会显示上次用户正在编辑的没有发表的内容。 博客发表后，本地缓存将被删除。 用户可以选择 把正在写的博客保存到服务器草稿箱，即使换浏览器或者清除缓存，内容也不会丢失。 注意：虽然浏览器存储大部分时候都比较可靠，但为了您的数据安全，在联网后，请务必及时发表或者保存到服务器草稿箱。 #浏览器兼容 目前，本编辑器对Chrome浏览器支持最为完整。建议大家使用较新版本的Chrome。 IE９以下不支持 IE９，１０，１１存在以下问题 不支持离线功能 IE9不支持文件导入导出 IE10不支持拖拽文件导入]]></content>
       <categories>
-          
-          <category> android基础 </category>
-          
+        <category>android基础</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> markdown </tag>
-            
-            <tag> 随笔 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-  
-  
+      <tags>
+        <tag>markdown</tag>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
 </search>

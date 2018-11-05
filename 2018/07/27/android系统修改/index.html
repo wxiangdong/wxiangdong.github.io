@@ -92,11 +92,11 @@
 <meta name="keywords" content="MTK - 系统修改">
 <meta property="og:type" content="article">
 <meta property="og:title" content="android系统修改">
-<meta property="og:url" content="http://wangxiangdong.xyz/2018/07/27/android系统修改/index.html">
+<meta property="og:url" content="http://www.wangxiangdong.xyz/2018/07/27/android系统修改/index.html">
 <meta property="og:site_name" content="王同学的技术小屋">
 <meta property="og:description" content="前言以下都是基于mtk平台，系统相关修改点，在此记录。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-06T10:36:14.693Z">
+<meta property="og:updated_time" content="2018-08-30T07:59:48.031Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android系统修改">
 <meta name="twitter:description" content="前言以下都是基于mtk平台，系统相关修改点，在此记录。">
@@ -129,7 +129,7 @@
 
 
 
-  <link rel="canonical" href="http://wangxiangdong.xyz/2018/07/27/android系统修改/"/>
+  <link rel="canonical" href="http://www.wangxiangdong.xyz/2018/07/27/android系统修改/"/>
 
 
 
@@ -321,7 +321,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://wangxiangdong.xyz/2018/07/27/android系统修改/">
+    <link itemprop="mainEntityOfPage" href="http://www.wangxiangdong.xyz/2018/07/27/android系统修改/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="王向东">
@@ -434,10 +434,13 @@
 <li><p>去掉开机引导<br>packages/apps/Launcher3/src/com/android/launcher3/Launcher.java<br>注释launcherClings.showLongPressCling(true)<br>11.隐藏设置中的某一项<br>packages/apps/Settings/src/com/android/settings/SettingsActivity.java</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    Bundle metaData = activityInfo.metaData;</span><br><span class="line">-   if ((metaData == null) || !metaData.containsKey(EXTRA_CATEGORY_KEY)) &#123;</span><br><span class="line">+   /*if ((metaData == null) || !metaData.containsKey(EXTRA_CATEGORY_KEY)) &#123;*/    // add by wxd for hide google in settings</span><br><span class="line">+   if ((metaData == null) || !metaData.containsKey(EXTRA_CATEGORY_KEY) || activityInfo.packageName.equals(&quot;com.google.android.gms&quot;)) &#123;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>修改默认横屏<br>framwork/base/services/core/java/com/android/server/policy/PhoneWindowManager.java<br>修改rotationForOrientationLw方法，直接返回Surface.ROTATION_90</p>
+<li><p>修改默认横屏<br>framwork/base/services/core/java/com/android/server/policy/PhoneWindowManager.java<br>修改rotationForOrientationLw方法，直接返回Surface.ROTATION_90<br>13.修改launcher中控件的位置<br>可在<br>14.修改设备在路由器那边的显示名称<br>frameworks/base/services/java/com/android/server/ConnectivityService.java中生成 :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// setup our unique device name</span><br><span class="line">String id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);</span><br><span class="line">if (id != null &amp;&amp; id.length() &gt; 0) &#123;</span><br><span class="line">    String name = new String(&quot;android_&quot;).concat(id);</span><br><span class="line">    SystemProperties.set(&quot;net.hostname&quot;, name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果需要自己定义，可以注释掉这一段，然后在system.prop中定义 net.hostname=xxxxxx<br>需要注意的是hostname不能带空格，不然dhcp那边会有问题。</p>
 </li>
-<li>修改hotseat横屏时在底部</li>
 </ol>
+<p>15.修改wifip2p</p>
+<p>16.修改wifi热点名称</p>
 
       
     </div>
@@ -497,7 +500,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://wangxiangdong.xyz/2018/07/27/android系统修改/" title="android系统修改">http://wangxiangdong.xyz/2018/07/27/android系统修改/</a>
+    <a href="http://www.wangxiangdong.xyz/2018/07/27/android系统修改/" title="android系统修改">http://www.wangxiangdong.xyz/2018/07/27/android系统修改/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
